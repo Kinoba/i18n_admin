@@ -60,6 +60,12 @@ module I18nAdmin
 
     protected
 
+    def translations
+      @translations = I18nAdmin::TranslationsSet.pluck(:locale).to_h do |locale|
+        [locale.to_sym, I18nAdmin::TranslationsSet.find_by(locale: locale).translations]
+      end
+    end
+
     def lookup(locale, key, scope = [], options = {})
       key = normalize_flat_keys(locale, key, scope, options[:separator])
       store["#{locale}.#{key}"]

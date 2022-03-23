@@ -43,7 +43,8 @@ module I18nAdmin
 
     def all_translations_for(locale)
       request_store.store[store_key_for(locale, :hash)] ||= backends.map do |backend|
-        translations_for(locale, backend)
+        translations_for_locale = translations_for(locale, backend)
+        translations_for_locale.present? ? translations_for_locale : {}
       end.reduce(&:reverse_merge)
     end
 
