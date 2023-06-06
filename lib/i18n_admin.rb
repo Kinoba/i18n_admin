@@ -6,7 +6,6 @@ require 'turbolinks'
 require 'nprogress-rails'
 require 'sucker_punch'
 require 'sidekiq'
-require 'sidekiq/job_monitor'
 require 'paperclip'
 require 'font-awesome-rails'
 
