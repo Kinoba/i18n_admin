@@ -6,18 +6,13 @@ module I18nAdmin
 
       register :xls, self
 
-      attr_reader :file, :spreadsheet, :sheet
+      attr_reader :file_url, :spreadsheet, :sheet, :tempfile
 
-      def self.import(locale, file)
-        import = new(locale, file)
-        import.run
-      ensure
-        file.close
-      end
-
-      def initialize(locale, file)
+      def initialize(locale, file_url)
+        @file_url = file_url
         @locale = locale
-        @spreadsheet = Spreadsheet.open(file.path)
+        download_import_file_to_tempfile
+        @spreadsheet = Spreadsheet.open(tempfile.path)
         @sheet = spreadsheet.worksheet(0)
       end
 
@@ -32,6 +27,8 @@ module I18nAdmin
 
           save_updated_models
         end
+      ensure
+        tempfile.close
 
         errors.empty?
       end
@@ -52,6 +49,15 @@ module I18nAdmin
         end
 
         [key, value, index]
+      end
+
+      def download_import_file_to_tempfile
+        resp = HTTParty.get(file_url)
+
+        @tempfile = Tempfile.new
+        @tempfile.binmode
+        @tempfile.write(resp.body)
+        @tempfile.rewind
       end
     end
   end

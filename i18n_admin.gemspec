@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'coffee-rails'
   s.add_dependency 'font-awesome-rails'
+  s.add_dependency 'httparty'
   s.add_dependency 'kaminari'
   s.add_dependency 'nprogress-rails'
   s.add_dependency 'paperclip'
